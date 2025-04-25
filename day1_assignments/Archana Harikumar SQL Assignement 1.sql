@@ -1,0 +1,1 @@
+copy public.order_details(orderid, productid, unitprice, quantity, discount) from 'C:\CVS\order_details.csv' DELIMITER ',' CSV HEADER encoding 'windows-1251';
