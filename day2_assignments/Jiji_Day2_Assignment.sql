@@ -101,3 +101,15 @@ WHERE categoryid NOT IN (1, 2, 3)
 SELECT customerid, companyname
 FROM customers
 WHERE companyname LIKE 'A%'
+
+--21.INSERT into orders table:
+INSERT INTO orders
+(orderid, customerid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight)
+VALUES (
+	11078, 'ALFKI', 5, '2025-04-23', '2025-04-30', '2025-04-25', 2, 45.50
+)
+
+--22.Increase(Update)  the unit price of all products in category_id =2 by 10%.(HINT: unit_price =unit_price * 1.10)
+UPDATE products 
+SET unitprice = unitprice * 1.10
+WHERE categoryid = 2
