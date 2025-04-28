@@ -1,0 +1,63 @@
+--1.List all customers and the products they ordered with the order date.
+
+SELECT C.COMPANY_NAME AS CUSTOMER,
+	O.ORDER_ID,
+	P.PRODUCT_NAME,
+	OD.QUANTITY,
+	O.ORDER_DATE
+FROM CUSTOMERS C
+INNER JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
+INNER JOIN ORDER_DETAILS OD ON O.ORDER_ID = OD.ORDER_ID
+INNER JOIN PRODUCTS P ON OD.PRODUCT_ID = P.PRODUCT_ID 
+
+--2.Show each order with customer, employee, shipper, and product info — even if some parts are missing. (Left Join)
+
+SELECT O.ORDER_ID,
+	C.CUSTOMER_ID,
+	E.EMPLOYEE_ID,
+	S.SHIPPER_ID,
+	P.PRODUCT_NAME
+FROM ORDERS O
+LEFT JOIN CUSTOMERS C ON O.CUSTOMER_ID = C.CUSTOMER_ID
+LEFT JOIN EMPLOYEES E ON O.EMPLOYEE_ID = E.EMPLOYEE_ID
+LEFT JOIN SHIPPERS S ON O.SHIP_VIA = S.SHIPPER_ID
+LEFT JOIN ORDER_DETAILS OD ON O.ORDER_ID = OD.ORDER_ID
+LEFT JOIN PRODUCTS P ON OD.PRODUCT_ID = P.PRODUCT_ID 
+
+--3.Show all order details and products (include all products even if they were never ordered).
+
+SELECT OD.ORDER_ID,
+	P.PRODUCT_ID,
+	OD.QUANTITY,
+	P.PRODUCT_NAME
+FROM ORDER_DETAILS OD
+RIGHT JOIN PRODUCTS P ON OD.PRODUCT_ID = P.PRODUCT_ID
+
+--4.List all product categories and their products — including categories that have no products, and products that are not assigned to any category
+
+SELECT C.CATEGORY_NAME,
+	P.PRODUCT_NAME
+FROM CATEGORIES C
+FULL JOIN PRODUCTS P ON C.CATEGORY_ID = P.CATEGORY_ID
+
+--5.Show all possible product and category combinations 
+
+SELECT C.CATEGORY_NAME,
+	P.PRODUCT_NAME
+FROM PRODUCTS P
+CROSS JOIN CATEGORIES C
+
+--6.Show all employees and their manager(Self join(left join))
+
+SELECT E.FIRST_NAME || ' ' || E.LAST_NAME AS EMPLOYEES_FULL_NAME,
+	M.FIRST_NAME || ' ' || M.LAST_NAME AS MANAGER
+FROM EMPLOYEES E
+LEFT JOIN EMPLOYEES M ON E.EMPLOYEE_ID = M.REPORTS_TO
+
+--7.List all customers who have not selected a shipping method.
+
+SELECT C.CUSTOMER_ID,
+	O.SHIP_VIA
+FROM CUSTOMERS C
+LEFT JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
+WHERE O.SHIP_VIA IS NULL
